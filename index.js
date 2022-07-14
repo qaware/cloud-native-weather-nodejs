@@ -29,5 +29,14 @@ const host = process.env.HOST || "localhost";
 const port = process.env.PORT || 3000;
 
 app.listen(port, host, () => {
-    console.log(`Weather service listening on http://${host}:${port}`)
+    console.log(`Started weather service on http://${host}:${port}`)
 });
+
+const shutdown = () => {
+    console.log('Stopping weather service ...');
+    app.close(() => {
+        console.log('Stopped weather service');
+    });
+};
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);
