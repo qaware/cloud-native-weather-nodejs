@@ -2,13 +2,8 @@
 FROM node:16.16 as builder
 
 RUN npm install --location=global npm@8.14.0
-RUN npm install --location=global pkg
 
 ENV NODE_ENV=production
-ENV HOST=0.0.0.0
-ENV PORT=3000
-
-EXPOSE 3000
 WORKDIR /app
 
 COPY *.json ./
@@ -18,3 +13,20 @@ COPY favicon.ico .
 COPY *.js ./
 
 CMD [ "node", "index.js" ]
+
+FROM node:16.16 as pkg
+
+RUN npm install --location=global npm@8.14.0
+RUN npm install --location=global pkg
+
+ENV NODE_ENV=production
+ENV HOST=0.0.0.0
+ENV PORT=3000
+
+EXPOSE 3000
+WORKDIR /app
+
+COPY --from=builder /app /app
+RUN pkg package.json
+
+CMD [ "index" ]

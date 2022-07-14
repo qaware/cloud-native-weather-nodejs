@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "This example implements a simple weather REST service using the Node.js and various useful frameworks.",
   "main": "index.js",
+  "bin": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
@@ -35,7 +36,8 @@
     "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.19"
+    "nodemon": "^2.0.19",
+    "pkg": "^5.8.0"
   },
   "nodemonConfig": {
     "ignore": [
@@ -44,5 +46,13 @@
       "*.md"
     ],
     "delay": 1000
+  },
+  "pkg": {
+    "scripts": "*.js",
+    "assets": "facicon.ico",
+    "targets": [
+      "node16-linux-arm64"
+    ],
+    "outputPath": "dist"
   }
 }

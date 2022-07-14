@@ -28,13 +28,13 @@ app.get('/health/ready', health.readiness);
 const host = process.env.HOST || "localhost";
 const port = process.env.PORT || 3000;
 
-app.listen(port, host, () => {
+const server = app.listen(port, host, () => {
     console.log(`Started weather service on http://${host}:${port}`)
 });
 
 const shutdown = () => {
     console.log('Stopping weather service ...');
-    app.close(() => {
+    server.close(() => {
         console.log('Stopped weather service');
     });
 };
