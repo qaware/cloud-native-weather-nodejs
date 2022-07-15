@@ -9,6 +9,8 @@ const weather = require("./weather")
 const health = require("./health")
 
 // define main app with middlewares
+// https://blog.logrocket.com/express-middleware-a-complete-guide/
+
 // deepcode ignore UseCsurfForExpress: No CSRF protection required
 const app = express();
 app.use(compression());
