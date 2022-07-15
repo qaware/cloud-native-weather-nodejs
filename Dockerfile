@@ -1,9 +1,13 @@
 # syntax=docker/dockerfile:1
 FROM node:16.16 as builder
 
-RUN npm install --location=global npm@8.14.0
+ARG node_env=production
+ENV NODE_ENV $node_env
+ENV HOST=0.0.0.0
 
-ENV NODE_ENV=production
+RUN npm install --location=global npm@8.14.0
+RUN npm install --location=global nodemon
+
 WORKDIR /app
 
 COPY *.json ./

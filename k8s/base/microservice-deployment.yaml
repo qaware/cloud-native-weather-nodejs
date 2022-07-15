@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weather-service
+  labels:
+    type: microservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: weather-service
+  template:
+    metadata:
+      labels:
+        app: weather-service
+    spec:
+      containers:
+      - name: weather-service
+        image: cloud-native-weather-nodejs
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "0.5"
+          limits:
+            memory: "256Mi"
+            cpu: "1"
+        livenessProbe:
+          timeoutSeconds: 1
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          httpGet:
+            port: http
+            path: "/health/live"
+        readinessProbe:
+          timeoutSeconds: 1
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          httpGet:
+            port: http
+            path: "/health/ready"
+        ports:
+          - name: http
+            containerPort: 3000
+        envFrom:
+          - configMapRef:
+              name: database-configmap
+          - secretRef:
+              name: database-secrets
