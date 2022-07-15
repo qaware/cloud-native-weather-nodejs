@@ -51,7 +51,7 @@
     "scripts": "*.js",
     "assets": "facicon.ico",
     "targets": [
-      "node16-linux-arm64"
+      "node16-linux-x64"
     ],
     "outputPath": "dist"
   }

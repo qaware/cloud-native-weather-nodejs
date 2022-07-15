@@ -32,6 +32,7 @@ const server = app.listen(port, host, () => {
     console.log(`Started weather service on http://${host}:${port}`)
 });
 
+// https://emmer.dev/blog/you-don-t-need-an-init-system-for-node.js-in-docker/
 const shutdown = () => {
     console.log('Stopping weather service ...');
     server.close(() => {
