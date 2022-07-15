@@ -1,7 +1,8 @@
 # syntax=docker/dockerfile:1
+ARG node_env=production
+
 FROM node:16.16 as builder
 
-ARG node_env=production
 ENV NODE_ENV $node_env
 ENV HOST=0.0.0.0
 

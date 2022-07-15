@@ -21,3 +21,10 @@ $ npm install --save serve-favicon
 
 ## Adding Containerization
 
+## Adding Kustomize
+
+## Adding Tilt support
+
+## Adding Skaffold support
+
+## Continuous Integration
