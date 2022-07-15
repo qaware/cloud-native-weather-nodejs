@@ -4,12 +4,14 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const cors = require("cors");
 const limit = require("express-rate-limit");
+const compression = require("compression");
 const weather = require("./weather")
 const health = require("./health")
 
 // define main app with middlewares
 // deepcode ignore UseCsurfForExpress: No CSRF protection required
 const app = express();
+app.use(compression());
 app.use(favicon("favicon.ico"));
 app.use(morgan("combined"));
 app.use(helmet());
