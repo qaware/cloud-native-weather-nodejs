@@ -1,0 +1,31 @@
+apiVersion: skaffold/v2beta24
+kind: Config
+metadata:
+  name: weather-service-nodejs
+
+build:
+  tagPolicy:
+    gitCommit: {}
+  artifacts:
+    - image: cloud-native-weather-nodejs
+      docker:
+        dockerfile: Dockerfile
+        target: builder
+        buildArgs: 
+          node_env: development 
+  local:
+    push: false
+    useBuildkit: true
+    useDockerCLI: false
+
+deploy:
+  kustomize:
+    defaultNamespace: default
+    paths: ["k8s/overlays/dev"]
+
+portForward:
+  - resourceName: weather-service
+    resourceType: service
+    namespace: default
+    port: 3000
+    localPort: 13000
