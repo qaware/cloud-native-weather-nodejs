@@ -1,6 +1,6 @@
-# Workshop Instructions
+# Cloud-native Experience Lab Workshop
 
-## Setup Node.js Project
+## Project Setup
 
 ```bash
 $ npm init -y
@@ -9,7 +9,7 @@ $ npm install --save axios
 $ npm install --save-dev nodemon
 ```
 
-## Adding Cross-Cutting Concerns
+## Crosscutting Concerns
 
 ```bash
 $ npm install --save morgan
@@ -19,12 +19,14 @@ $ npm install --save express-rate-limit
 $ npm install --save serve-favicon
 ```
 
-## Adding Containerization
+## K8s Deployment
 
-## Adding Kustomize
+## Continuous Development
 
-## Adding Tilt support
+### Tilt
 
-## Adding Skaffold support
+### Skaffold
 
 ## Continuous Integration
+
+### Github Actions
