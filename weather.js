@@ -12,7 +12,7 @@ const getWeather = async (req, res) => {
     }
 
     const now = Date.now()
-    const nextUpdate = new Date(now + ( 3600 * 1000 * 24));
+    const nextUpdate = new Date(now + ( 3600 * 1000 * 1));
     let currentWeather = await database.Weather.findOne({ where: { city: city } });
     if (currentWeather === null) {
         // retrieve weather from OpenWeatherMap API and create cache
@@ -20,7 +20,7 @@ const getWeather = async (req, res) => {
         currentWeather = await database.Weather.create({ city: city, weather: weather, nextUpdate: nextUpdate });
     } else {
         // check if we need to update the current weather
-        if (currentWeather.nextUpdate < now) {
+        if (currentWeather.next1pdate < now) {
             const weather = await retrieveCurrentWeather(city);
             currentWeather = await currentWeather.update({weather: weather, nextUpdate: nextUpdate});
         }
