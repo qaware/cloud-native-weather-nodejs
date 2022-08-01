@@ -25,6 +25,10 @@ const Weather = sequelize.define("Weather", {
         type: DataTypes.STRING,
         allowNull: false
     },
+    temperature: {
+        type: DataTypes.DOUBLE,
+        allowNull: false
+    },
     nextUpdate: {
         type: DataTypes.DATE,
         allowNull: false
