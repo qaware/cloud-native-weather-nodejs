@@ -8,4 +8,4 @@ spec:
   url: https://github.com/qaware/cloud-native-weather-nodejs
   ref:
     branch: main
-    # tag: 1.0.0
+    # tag: 1.3.0

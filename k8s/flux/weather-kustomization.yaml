@@ -15,7 +15,7 @@ spec:
   images:
     - name: cloud-native-weather-nodejs
       newName: ghcr.io/qaware/cloud-native-weather-nodejs # {"$imagepolicy": "flux-system:cloud-native-weather-nodejs:name"}
-      newTag: 1.2.0 # {"$imagepolicy": "flux-system:cloud-native-weather-nodejs:tag"}
+      newTag: 1.3.0 # {"$imagepolicy": "flux-system:cloud-native-weather-nodejs:tag"}
   patchesStrategicMerge:
     - apiVersion: apps/v1
       kind: Deployment
