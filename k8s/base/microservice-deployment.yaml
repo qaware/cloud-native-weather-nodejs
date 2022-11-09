@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: weather-service
-        image: cloud-native-weather-nodejs
+        image: jshaktiraj/go-k8s:0.3.0
         resources:
           requests:
             memory: "128Mi"

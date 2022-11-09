@@ -1,0 +1,200 @@
+apiVersion: v1
+data:
+  POSTGRES_DB: weather
+  POSTGRES_HOST: weather-database
+kind: ConfigMap
+metadata:
+  labels:
+    app: weather-service
+    env: dev
+    framework: nodejs
+  name: database-configmap-b78hm8dc9b
+---
+apiVersion: v1
+data:
+  POSTGRES_PASSWORD: MXFheTJ3c3g=
+  POSTGRES_USER: bm9kZWpz
+kind: Secret
+metadata:
+  labels:
+    app: weather-service
+    env: dev
+    framework: nodejs
+  name: database-secrets-7dtgft72ck
+type: Opaque
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    env: dev
+    type: hoverfly
+  name: hoverfly
+spec:
+  ports:
+  - name: proxy
+    port: 8500
+    targetPort: 8500
+  - name: webserver
+    port: 8888
+    targetPort: 8888
+  selector:
+    env: dev
+    type: hoverfly
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    env: dev
+    type: database
+  name: weather-database
+spec:
+  ports:
+  - name: "5432"
+    port: 5432
+    targetPort: 5432
+  selector:
+    env: dev
+    type: database
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: weather-service
+    env: dev
+    framework: nodejs
+    type: microservice
+  name: weather-service
+spec:
+  ports:
+  - port: 8085
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: weather-service
+    env: dev
+    framework: nodejs
+  sessionAffinity: None
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    env: dev
+    type: hoverfly
+  name: hoverfly
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      env: dev
+      type: hoverfly
+  template:
+    metadata:
+      labels:
+        env: dev
+        type: hoverfly
+    spec:
+      containers:
+      - image: jshaktiraj/go-k8s:0.3.0
+        name: hoverfly
+        ports:
+        - containerPort: 8500
+        - containerPort: 8888
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    env: dev
+    type: database
+  name: weather-database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      env: dev
+      type: database
+  template:
+    metadata:
+      labels:
+        env: dev
+        type: database
+    spec:
+      containers:
+      - envFrom:
+        - configMapRef:
+            name: database-configmap-b78hm8dc9b
+        - secretRef:
+            name: database-secrets-7dtgft72ck
+        image: postgres:11.16
+        imagePullPolicy: IfNotPresent
+        name: database
+        ports:
+        - containerPort: 5432
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: 256Mi
+          requests:
+            cpu: "0.5"
+            memory: 128Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: weather-service
+    env: dev
+    framework: nodejs
+    type: microservice
+  name: weather-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: weather-service
+      env: dev
+      framework: nodejs
+  template:
+    metadata:
+      labels:
+        app: weather-service
+        env: dev
+        framework: nodejs
+    spec:
+      containers:
+      - envFrom:
+        - configMapRef:
+            name: database-configmap-b78hm8dc9b
+        - secretRef:
+            name: database-secrets-7dtgft72ck
+        image: jshaktiraj/go-k8s:0.3.0
+        livenessProbe:
+          httpGet:
+            path: /health/live
+            port: http
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 1
+        name: weather-service
+        ports:
+        - containerPort: 3000
+          name: http
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: http
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 1
+        resources:
+          limits:
+            cpu: "1"
+            memory: 256Mi
+          requests:
+            cpu: "0.5"
+            memory: 128Mi

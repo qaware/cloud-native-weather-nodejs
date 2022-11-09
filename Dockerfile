@@ -16,6 +16,12 @@ RUN npm install --omit=dev
 
 COPY favicon.ico .
 COPY *.js ./
+RUN npm install --save morgan
+RUN npm install --save helmet
+RUN npm install --save cors
+RUN npm install --save express-rate-limit
+RUN npm install --save serve-favicon
+
 
 CMD [ "node", "index.js" ]
 
