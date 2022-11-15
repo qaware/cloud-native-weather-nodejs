@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  POSTGRES_DB: weather
+  POSTGRES_HOST: weather-database
+kind: ConfigMap
+metadata:
+  labels:
+    app: weather-service
+    env: prod
+    framework: nodejs
+  name: database-configmap-b78hm8dc9b

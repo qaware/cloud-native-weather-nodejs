@@ -11,5 +11,5 @@ spec:
   sessionAffinity: None
   ports:
     - protocol: TCP
-      port: 8080
+      port: 8085
       targetPort: http
